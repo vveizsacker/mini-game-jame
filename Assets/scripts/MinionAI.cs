@@ -9,9 +9,10 @@ public enum State
     attack
 }
 
-public class Ally : Entity
+public class MinionAI : Entity
 {
-    public Entity entity;
+    private Entity target;
+
     public State state;
     Vector2 moveDir;
 
@@ -20,23 +21,29 @@ public class Ally : Entity
         switch (state)
         {
             case State.idle:
+                target = getClosestEntity();
+                if(target != null)
+                {
+                    state = State.chase;
+                    break;
+                }
                 break;
 
             case State.chase:
                 if (!canMove) break;
 
-                if(entity == null)
+                if(target == null)
                 {
                     state = State.idle;
                     break;
                 }
 
-                if(!CheckInRange(entity.transform.position , attackRange))
+                if(!CheckInRange(target.transform.position , attackRange))
                 {
-                    moveDir = entity.transform.position - transform.position;
+                    moveDir = target.transform.position - transform.position;
                     animator.SetBool("moving", true);
                     Move(moveDir.normalized);
-                    if (entity.transform.position.x > transform.position.x) Look(1);
+                    if (target.transform.position.x > transform.position.x) Look(1);
                     else Look(-1);
                 }
                 else
@@ -48,13 +55,13 @@ public class Ally : Entity
             case State.attack:
                 if (!canAttack) break;
 
-                if (entity == null)
+                if (target == null)
                 {
                     state = State.idle;
                     break;
                 }
 
-                if (CheckInRange(entity.transform.position, attackRange) )
+                if (CheckInRange(target.transform.position, attackRange) )
                 {
                     if(attackCounter < Time.time)
                     {
@@ -65,7 +72,7 @@ public class Ally : Entity
                         }
                         else
                         {
-                            Attack(entity);
+                            Attack(target);
                         }
 
                         Debug.Log("attacked");

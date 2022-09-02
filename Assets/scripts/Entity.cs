@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Bar healthBar;
 
     [SerializeField] protected bool isAlly;
+    [SerializeField] protected LayerMask enemyLayer;
 
     [SerializeField] protected int maxHealth;
     protected int health;
@@ -46,6 +47,7 @@ public class Entity : MonoBehaviour
     {
         rb.velocity = dir * speed * Time.deltaTime * 100;
     }
+
     protected Vector2 getRandomDir()
     {
         return new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
@@ -53,14 +55,27 @@ public class Entity : MonoBehaviour
 
     public Entity[] getEntitiesInRange(Vector2 pos , float range)
     {
-        Entity[] entities = new Entity[10];
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, range);
+        
+        Entity[] entities = new Entity[colliders.Length];
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            entities[i] = colliders[i].GetComponent<Entity>();
+        }
         return entities;
     }
 
     public Entity getClosestEntity()
     {
-        Entity entity = null;
-        return entity;
+        Collider2D collider = Physics2D.OverlapCircle(transform.position, Mathf.Infinity, enemyLayer);
+        
+        if (collider != null)
+        {
+            Entity entity = collider.GetComponent<Entity>();
+            return entity;
+        }
+
+        return null;
     }
     
     protected void Look(float x)

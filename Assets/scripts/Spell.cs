@@ -6,6 +6,8 @@ public class Spell
 {
     protected string spellName;
     protected string spellDescription;
+    int manaCost;
+    Player player;
 
     public virtual void Cast()
     {
