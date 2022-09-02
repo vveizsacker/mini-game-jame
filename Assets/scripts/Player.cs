@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public int maxMana;
     int mana;
 
+    public Spell[] spells;
 
     public void Update()
     {
@@ -14,6 +15,11 @@ public class Player : MonoBehaviour
     }
 
     public void Summon()
+    {
+
+    }
+
+    public void CastSpell(int index)
     {
 
     }
