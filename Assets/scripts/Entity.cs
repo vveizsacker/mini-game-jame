@@ -81,7 +81,8 @@ public class Entity : MonoBehaviour
     protected void Look(float x)
     {
         Vector3 scale = Vector3.one;
-        scale.x = x;
+        if (x > 0) scale.x = 1;
+        else scale.x = -1;
         spriterenderer.transform.localScale = scale;
     }
 

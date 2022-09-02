@@ -43,8 +43,8 @@ public class MinionAI : Entity
                     moveDir = target.transform.position - transform.position;
                     animator.SetBool("moving", true);
                     Move(moveDir.normalized);
-                    if (target.transform.position.x > transform.position.x) Look(1);
-                    else Look(-1);
+                    Look(target.transform.position.x - transform.position.x);
+                    
                 }
                 else
                 {
