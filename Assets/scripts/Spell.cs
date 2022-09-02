@@ -5,8 +5,17 @@ using UnityEngine;
 public class Spell 
 {
     protected string spellName;
-    
+    protected string spellDescription;
+
     public virtual void Cast()
+    {
+
+    }
+    public virtual void Cast(Entity entity)
+    {
+
+    }
+    public virtual void Cast(Entity[] entites)
     {
 
     }
@@ -19,11 +28,15 @@ public class Heal : Spell
     
     public Heal(Entity[] entities)
     {
-        spellName = "Heal Spell";       
+        spellName = "Heal Spell";
+        spellDescription = "Heal your minions";
     }
 
-    public override void Cast()
+    public override void Cast(Entity[] entities)
     {
-        
+        foreach(Entity e in entities)
+        {
+            e.AddHealth(healAmount);
+        }
     }
 }

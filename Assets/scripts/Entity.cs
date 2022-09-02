@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public SpriteRenderer spriterenderer;
-    public Animator animator;
-    public Bar healthBar;
+    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected SpriteRenderer spriterenderer;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected Bar healthBar;
 
-    public bool isAlly;
+    [SerializeField] protected bool isAlly;
 
-    public int maxHealth;
-    public int health;
-    public int baseDamage;
-    public float attackRate;
-    public float critChance;
-    public float resistance;
-    public bool isRanged = false;
+    [SerializeField] protected int maxHealth;
+    protected int health;
+    [SerializeField] protected int baseDamage;
+    [SerializeField] protected float attackRate;
+    [SerializeField] protected float critChance;
+    [SerializeField] protected float resistance;
+    [SerializeField] protected bool isRanged = false;
 
     protected float moveCounter;
     protected float attackCounter;
 
-    public int speed;
-    public int attackRange;
+    [SerializeField] protected int speed;
+    [SerializeField] protected int attackRange;
 
-    public bool canAttack;
-    public bool canMove;
+    [SerializeField] protected bool canAttack;
+    [SerializeField] protected bool canMove;
 
 
     void Start()
@@ -56,6 +56,7 @@ public class Entity : MonoBehaviour
         Entity[] entities = new Entity[10];
         return entities;
     }
+
     public Entity getClosestEntity()
     {
         Entity entity = null;
@@ -74,6 +75,12 @@ public class Entity : MonoBehaviour
     public void Stun(float duration)
     {
 
+    }
+
+    public void AddHealth(int amount)
+    {
+        if (health + amount > maxHealth) health = maxHealth;
+        else health += amount;
     }
 
     protected bool CheckInRange(Vector2 pos,float range)
