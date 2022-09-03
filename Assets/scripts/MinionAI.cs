@@ -11,9 +11,12 @@ public enum State
 
 public class MinionAI : Entity
 {
-    private Entity target;
+
+    [Header("Combat Agent")]
 
     public State state;
+    public Transform prayer;
+
     Vector2 moveDir;
 
     private void Update()
@@ -27,6 +30,8 @@ public class MinionAI : Entity
                     state = State.chase;
                     break;
                 }
+                Stop();
+                animator.SetBool("moving", false);
                 break;
 
             case State.chase:
@@ -44,7 +49,6 @@ public class MinionAI : Entity
                     animator.SetBool("moving", true);
                     Move(moveDir.normalized);
                     Look(target.transform.position.x - transform.position.x);
-                    
                 }
                 else
                 {
@@ -65,10 +69,11 @@ public class MinionAI : Entity
                 {
                     if(attackCounter < Time.time)
                     {
+                        Stop();
                         animator.SetBool("moving", false);
                         if (isRanged)
                         {
-
+                            CreateProjectile(target);
                         }
                         else
                         {
@@ -77,6 +82,7 @@ public class MinionAI : Entity
 
                         Debug.Log("attacked");
                         attackCounter = attackRate + Time.time;
+
                         moveDir = getRandomDir().normalized;
                         Look(moveDir.x);
                     }
@@ -84,7 +90,10 @@ public class MinionAI : Entity
                     if(attackCounter > Time.time)
                     {
                         animator.SetBool("moving", true);
+                        if (CheckObstacle(moveDir)) moveDir = getRandomDir().normalized;
                         Move(moveDir.normalized);
+                        Look(moveDir.x);
+
                     }
                 }
                 else
